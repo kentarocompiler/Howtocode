@@ -95,7 +95,7 @@ void home() {
 
 
 
-
+//ฟังก์ชันนี้เอาไว้ดักจากผูู้ใช้พิมไปเรื่อย,ถ้าใช่(int)จะคืนค่าเป้นTrue แล้วก็ออกลูป แต่ถ้าไม่ใช่(int)จะคืนค่าเป้นfalseแล้ววนลูปใหม่
 int Helpercode(int min, int max) {
     int input;
     while (!(cin >> input) || input < min || input > max) {
@@ -107,20 +107,21 @@ int Helpercode(int min, int max) {
 
 
 
-
+//กลับไปหน้าหลัก กับ เปลี่ยนโต๊ะ
 void backtohome() {
     cout << endl;
-    cout << ">>> [0] BACK TO HOME <<<" << endl;
-    cout << ">>> [9] CHANGE TABLE <<< " << endl;
+    cout << ">>> 0. BACK TO HOME <<<" << endl;
+    cout << ">>> 9. CHANGE TABLE <<< " << endl;
+    cout << endl;
     cout << "SELECT OPTION >> ";
 }
 
 
 
-
+//ให้ลูกค้าเลือกโต๊ะได้หรือจะกลับไปหน้าหลักก็ได้
 void selectTable() {
     while (true) {
-        system("cls"); // ล้างหน้าจอเมื่อเข้าหน้าเลือกโต๊ะ
+        system("cls"); // ล้างหน้าจอ
         cout << endl << endl;
         cout << "================== SELECT TABLE ==================" << endl;
 
@@ -128,7 +129,7 @@ void selectTable() {
             cout << "  (" << i << ") TABLE " << i << endl;
         }
         cout << "--------------------------------------------------" << endl;
-        cout << " [0] BACK TO HOME " << endl;
+        cout << " 0. BACK TO HOME " << endl;
         cout << "--------------------------------------------------" << endl;
         cout << "CHOOSE YOUR TABLE >> ";
 
@@ -138,18 +139,20 @@ void selectTable() {
             cout << "\n---------- PLEASE ENTER NUMBERS ONLY ----------" << endl;
             cin.clear();
             cin.ignore(1000, '\n');
-            system("pause"); // หยุดรอให้เห็น error ก่อนล้างใหม่
+            system("pause"); // หยุดรอให้เห็น error ก่อนรี
             continue;
         }
 
         if (table >= 1 && table < TABLE.size()) {
-            useTable[table]++;
+            useTable[table]++; 
+            //useTable - นับครั้งที่มีคนมานั่งโต๊ะเพื่อเอาไปแสดงผลในฟังก์ชันพนักงาน
+            //Table - เลขโต๊ะ
             break;
         }else if (table == 0) {
             break;
         }else {
             cout << "\n---------- INVALID TABLE NUMBER ----------" << endl;
-            system("pause");
+            system("pause"); // หยุดรอให้เห็น error ก่อนรี
         }
     }
 }
@@ -160,11 +163,11 @@ void selectTable() {
 void customer() {
     while (true) {
         if (table == 0) {
-            selectTable();
-            if (table == 0) return;
+            selectTable(); //ถ้ายังไม่ได้เลือกโต๊ะหรือ table == 0 โปรแกรมจะบังคับให้กลับไปเลือกโต๊ะใหม่
+            if (table == 0) return; // ถ้าเลือกเลข 0 จะกลับไปหน้าหลัก
         }
 
-        system("cls"); // ล้างจอเข้าหน้าเลือกประเภทอาหาร
+        system("cls"); // ล้างหน้าจอ
         cout << "\nTABLE: " << table << endl;
         cout << "========================================" << endl;
         cout << "            ORDER CATEGORIES            " << endl;
@@ -178,7 +181,7 @@ void customer() {
         cout << "----------------------------------------" << endl;
         cout << "SELECT MENU >> ";
 
-        if (!(cin >> menu)) {
+        if (!(cin >> menu)) { //ถ้าใช่(int)คืนค่าเป้นTrueแล้วเจอนิเศษกลายเป้นfalseเลยข้าม แต่ถ้าไม่ใช่(int)คืนค่าเป็นfalseแล้วเจอนิเศษกลายเป้นTrueเลยทำเงื่อนไขในif
             cout << ">>> INVALID INPUT! <<<" << endl;
             cin.clear(); 
             cin.ignore(1000, '\n');
@@ -187,9 +190,10 @@ void customer() {
         }
 
         if (menu == 0) { 
-            return; 
+            return; //ถ้าเลือก 0 จบการทำงานฟังก์ชันนี้กลับไปหาฟังก์ชันต้นทางที่เข้ามา
         }
-        if (menu == 9) { 
+
+        if (menu == 9) { //ถ้าเลือก 9 จะรีเซ็ตเลขโต๊ะเป้น 0 แล้วไปวนข้างบนใหม่พอเจอแล้วโปรแกรมจะบังคับไปหน้าเลือกโต๊ะ(selectTable)
             table = 0; 
             continue; 
         }

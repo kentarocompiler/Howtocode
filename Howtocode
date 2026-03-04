@@ -146,7 +146,7 @@ void selectTable() {
         if (table >= 1 && table < TABLE.size()) {
             useTable[table]++; 
             //useTable - นับครั้งที่มีคนมานั่งโต๊ะเพื่อเอาไปแสดงผลในฟังก์ชันพนักงาน
-            //Table - เลขโต๊ะ
+            //table - เลขโต๊ะ
             break;
         }else if (table == 0) {
             break;
@@ -206,12 +206,16 @@ void customer() {
                 cin.clear(); 
                 cin.ignore(1000, '\n');
             }
-
+            //ส่งข้อมูลมาจากฟังก์ชันเมนู
             TABLE[table].List.push_back(food);
-            TABLE[table].Price.push_back(price[menu]);
+            TABLE[table].Price.push_back(price[menu]);//price[menu] - ราคาของที่พึ่งเลือกไปจากฟังก์ชันเมนู, Price - เอาข้อมูลจาก price[menu]มาเก็บไว้
             TABLE[table].Amount.push_back(amount);
             TABLE[table].total += (price[menu] * amount);
             TABLE[table].count++;
+            //table - เลขโต๊ะ
+            //TABLE - จำนวนโต๊ะ
+
+            
 
             cout << endl;
             cout << ">> ADDED : " << food << " x" << amount << " - " << (price[menu] * amount) << " BAHT <<" << endl;
@@ -334,7 +338,7 @@ int moree() {
             return 0;
         }
         if (more == 9) {
-            table = 0;
+            table = 0; //รีเซ๊ตโต๊ะแล้วกลับไปวนใหม่ในฟังก์ชันcustomer
             return 1;
         }
     }
@@ -344,7 +348,7 @@ int moree() {
 
 
 void showBill() {
-    system("cls"); // ล้างจอแสดงบิลสรุป
+    system("cls"); 
     cout << "\n============ BILL SUMMARY (TABLE " << table << ") ===========" << endl;
     for (int i = 0; i < TABLE[table].count; i++) {
         cout << i + 1 << ". " << TABLE[table].List[i] << " x" << TABLE[table].Amount[i] << " = " << TABLE[table].Price[i] * TABLE[table].Amount[i] << " BAHT" << endl;
@@ -414,7 +418,7 @@ void employ() {
 
         }else if (TABLE[check].count > 0) {
             cout << "\nTABLE " << check << endl;
-            cout << " DETAILS :" << endl;
+            cout << "\n>>> DETAILS <<< :\n" << endl;
             for (int i = 0; i < TABLE[check].count; i++) {
                 cout << i + 1 << ". " << TABLE[check].List[i] << " x" << TABLE[check].Amount[i] << endl;
             }
@@ -448,7 +452,6 @@ void Host() {
         cout << "  2.TABLE USAGE" << endl;
         cout << "  3.BEST SELLING MENU" << endl;
         cout << "  4.DAILY PAYSLIP REPORT" << endl;
-        //cout << "  5.VIEW SAVED DATA" << endl;
         cout << "  5.SAVE & RESET ALL DATA" << endl;
         cout << "  6.MANAGE TABLE " << endl;
         cout << "  7.RESET DATA" << endl;
@@ -480,11 +483,6 @@ void Host() {
             }
             system("pause");
         }
-
-        /*else if (choose == 5) {
-            viewSavedData(); 
-            system("pause"); 
-        }*/
 
         else if (choose == 5) { 
             saveData(); 

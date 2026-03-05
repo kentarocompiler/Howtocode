@@ -564,34 +564,46 @@ void Bestselling() {
 
 
 
-
 void payslip(int tableID) {
-    // 1. เช็คก่อนว่าโต๊ะนี้มีออเดอร์ไหม หรือเป็นโต๊ะว่าง/โต๊ะจอง
     if (TABLE[tableID].count <= 0) {
-        cout << "\n[!] TABLE " << tableID << " HAS NO ORDERS OR IS EMPTY." << endl;
+        cout << "\n[!] Table " << tableID << " has no orders." << endl;
         return;
     }
 
-    // 2. แสดงหัวใบเสร็จ
-    cout << "\n==========================================" << endl;
-    cout << "           RECEIPT - TABLE " << tableID << endl;
-    cout << "==========================================" << endl;
+    // หัวใบเสร็จแบบเรียบง่าย ใช้ขีดธรรมดา
+    cout << "\n------------------------------------------" << endl;
+    cout << "            RECEIPT - TABLE " << tableID << endl;
+    cout << "------------------------------------------" << endl;
 
-    // 3. วนลูปดึงข้อมูลจาก vector ในโครงสร้าง TABLE[tableID]
-    // มึงเก็บ count ไว้แล้ว ใช้ตัวนั้นเป็นขอบเขตลูปได้เลย
+    // หัวข้อคอลัมน์ (ใส่ให้ดูรู้เรื่องว่าอันไหนคืออะไร)
+    cout << left << setw(4) << "No."
+        << setw(22) << "Menu"
+        << setw(6) << "Qty"
+        << "Price" << endl;
+    cout << "------------------------------------------" << endl;
+
+    // วนลูปแสดงรายการ
     for (int i = 0; i < TABLE[tableID].count; i++) {
-        cout << left << setw(2) << i + 1 << ". "
-            << setw(25) << TABLE[tableID].List[i]
-            << " x" << TABLE[tableID].Amount[i]
-            << "  " << (TABLE[tableID].Price[i] * TABLE[tableID].Amount[i]) << " BTH" << endl;
+        // สร้าง string มารับชื่อเมนูก่อน
+        string menuName = TABLE[tableID].List[i];
+
+        // ถ้าชื่อเมนูยาวเกิน 20 ตัว ให้ตัดทิ้งแล้วเติม .. แทน (ป้องกันบรรทัดเบี้ยว)
+        if (menuName.length() > 20) {
+            menuName = menuName.substr(0, 17) + "...";
+        }
+
+        cout << left << setw(4) << i + 1
+            << setw(22) << menuName // พิมพ์ชื่อที่จัดการแล้ว
+            << "x" << left << setw(5) << TABLE[tableID].Amount[i]
+            << right << setw(7) << (TABLE[tableID].Price[i] * TABLE[tableID].Amount[i])
+            << " B." << endl;
     }
 
-    // 4. แสดงยอดรวมสุทธิ
+    // สรุปยอด
     cout << "------------------------------------------" << endl;
-    cout << right << setw(30) << "TOTAL AMOUNT: " << TABLE[tableID].total << " BAHT" << endl;
-    cout << "==========================================" << endl;
-    cout << "          THANK YOU - VISIT AGAIN         " << endl;
-    cout << "==========================================\n" << endl;
+    cout << " TOTAL AMOUNT:" << right << setw(20) << TABLE[tableID].total << " Baht" << endl;
+    cout << "------------------------------------------" << endl;
+   
 }
 
 

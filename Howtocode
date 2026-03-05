@@ -679,13 +679,13 @@ int main() {
             string pass; 
             cout << "Password: ";
             cin >> pass;
-            if (pass == "555") employ();
+            if (pass == "checkin") employ();
         }
         else if (Num == 3) {
             string pass; 
             cout << "Password: "; 
             cin >> pass;
-            if (pass == "999") Host();
+            if (pass == "manage") Host();
         }
         else { cout << "Input valid error" << endl; 
         system("pause"); 

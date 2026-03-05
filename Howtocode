@@ -462,7 +462,7 @@ void Host() {
         cout << "  1.TABLE USAGE" << endl;
         cout << "  2.BEST SELLING MENU" << endl;
         cout << "  3.DAILY PAYSLIP REPORT" << endl;
-        cout << "  4.SAVE & RESET ALL DATA" << endl;
+        cout << "  4.RESET DATA" << endl;
         cout << "  5.MANAGE TABLE " << endl;
         cout << "--------------------------------------------------" << endl;
         cout << "  [0] BACK TO MAIN MENU" << endl;
@@ -494,8 +494,8 @@ void Host() {
         }
 
         else if (choose == 4) { 
-            saveData(); 
-            cout << ">>> DATA SAVED <<<" << endl; 
+            resetData();
+            //cout << ">>> DATA RESET <<<" << endl; 
             system("pause"); 
         }
         else if (choose == 5) { 
@@ -535,7 +535,7 @@ void Bestselling() {
                     break;
                 }
             }
-            if(!found) { 
+            if(!found) {
                 name.push_back(item);
                 totalQty.push_back(qty); 
             }
@@ -543,7 +543,7 @@ void Bestselling() {
     }
     if (name.empty()){ 
         cout << "No orders yet" << endl;
-        return; 
+        return;
     }
 
     int maxIdx = 0;
@@ -652,6 +652,7 @@ void resetData() {
         fill(useTable.begin(), useTable.end(), 0);
         cout << ">>> RESET COMPLETED <<<" << endl;
     }
+    else cout << ">>> PLEASE CAREFULLY RESET DATA <<<" << endl;
 }
 
 

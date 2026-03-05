@@ -459,13 +459,11 @@ void Host() {
         cout << "==================================================" << endl;
         cout << "                 HOST CONTROL PANEL               " << endl;
         cout << "==================================================" << endl;
-        cout << "  1.SUMMARY" << endl;
-        cout << "  2.TABLE USAGE" << endl;
-        cout << "  3.BEST SELLING MENU" << endl;
-        cout << "  4.DAILY PAYSLIP REPORT" << endl;
-        cout << "  5.SAVE & RESET ALL DATA" << endl;
-        cout << "  6.MANAGE TABLE " << endl;
-        cout << "  7.RESET DATA" << endl;
+        cout << "  1.TABLE USAGE" << endl;
+        cout << "  2.BEST SELLING MENU" << endl;
+        cout << "  3.DAILY PAYSLIP REPORT" << endl;
+        cout << "  4.SAVE & RESET ALL DATA" << endl;
+        cout << "  5.MANAGE TABLE " << endl;
         cout << "--------------------------------------------------" << endl;
         cout << "  [0] BACK TO MAIN MENU" << endl;
         cout << "==================================================" << endl;
@@ -474,15 +472,15 @@ void Host() {
 
 
         if (choose == 0) return;
-        else if (choose == 2) { 
+        else if (choose == 1) { 
             checktable(); 
             system("pause"); 
         }
-        else if (choose == 3) { 
+        else if (choose == 2) { 
             Bestselling(); 
             system("pause"); 
         }
-        else if (choose == 4) {
+        else if (choose == 3) {
             int tableID; 
             cout << "ENTER TABLE ID: "; 
             cin >> tableID;
@@ -495,22 +493,17 @@ void Host() {
             system("pause");
         }
 
-        else if (choose == 5) { 
+        else if (choose == 4) { 
             saveData(); 
             cout << ">>> DATA SAVED <<<" << endl; 
             system("pause"); 
         }
-        else if (choose == 6) { 
+        else if (choose == 5) { 
             manageTables(); 
-            system("pause"); 
-        }
-        else if (choose == 7) { 
-            resetData(); 
             system("pause"); 
         }
     }
 }
-
 
 
 

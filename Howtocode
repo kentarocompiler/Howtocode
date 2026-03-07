@@ -126,7 +126,12 @@ void selectTable() {
         cout << "================== SELECT TABLE ==================" << endl;
 
         for (int i = 1; i < TABLE.size(); i++) {
-            cout << "  (" << i << ") TABLE " << i << endl;
+
+            string status = "";
+            if (TABLE[i].total == -1) status = "[RESERVED]";
+            else if (TABLE[i].count > 0) status = "[FULL]";
+
+            cout << "  (" << i << ") TABLE " << i << " " << status << endl;
         }
         cout << "--------------------------------------------------" << endl;
         cout << " 0. BACK TO HOME " << endl;
@@ -142,22 +147,33 @@ void selectTable() {
             system("pause"); // หยุดรอให้เห็น error ก่อนรี
             continue;
         }
-
-        if (table >= 1 && table < TABLE.size()) {
+         if (table >= 1 && table < TABLE.size()) {
+            if (TABLE[table].total == -1) {
+                cout << "\n!!! THIS TABLE IS RESERVED. PLEASE CHOOSE ANOTHER !!!" << endl;
+                system("pause");
+                continue; // วนกลับไปเลือกใหม่
+            }
+            if (TABLE[table].count > 0) {
+                cout << "\n!!! THIS TABLE IS CURRENTLY OCCUPIED (NOT AVAILABLE) !!!" << endl;
+                system("pause");
+                continue; // วนกลับไปเลือกใหม
+            }
             useTable[table]++;
-            //useTable - นับครั้งที่มีคนมานั่งโต๊ะเพื่อเอาไปแสดงผลในฟังก์ชันพนักงาน
-            //table - เลขโต๊ะ
             break;
         }
-        else if (table == 0) {
-            break;
-        }
-        else {
-            cout << "\n---------- INVALID TABLE NUMBER ----------" << endl;
-            system("pause"); // หยุดรอให้เห็น error ก่อนรี
-        }
+
+         else if (table == 0) {
+             table = 0; // มั่นใจว่าค่า table เป็น 0 จริงๆ ก่อนกลับออกไป
+             break;
+         }
+         else {
+             cout << "\n---------- INVALID TABLE NUMBER ----------" << endl;
+             system("pause");
+         }
     }
 }
+
+
 
 
 
@@ -603,7 +619,7 @@ void payslip(int tableID) {
     cout << "------------------------------------------" << endl;
     cout << " TOTAL AMOUNT:" << right << setw(20) << TABLE[tableID].total << " Baht" << endl;
     cout << "------------------------------------------" << endl;
-   
+
 }
 
 

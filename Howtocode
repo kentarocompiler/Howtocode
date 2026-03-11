@@ -33,8 +33,8 @@ int more;
 int amount;
 int check;
 
-vector<TableOrder> TABLE; //โครงสร้างตัวเดียวกับในstruct TableOrderเลย ฟีลก็อปมาเพื่อนเป้นจำนวนโต๊ะ
-vector<int> useTable;//การใช้งานของโต๊ะ
+vector<TableOrder> TABLE; //จำนวนโต๊ะ
+vector<int> useTable;
 vector<MenuStats> globalSales; // เก็บยอดขายรวมของทั้งวัน
 
 
@@ -53,12 +53,12 @@ void showBill();
 
 //ALL employee function
 void employ();
-void payslip(int tableID);
 
 //ALL Host function
 void Host();
 void checktable();
 void Bestselling();
+void payslip(int tableID);
 void manageTables();
 
 void backtohome();
@@ -363,14 +363,8 @@ int moree() {
         if (more == 0) {
             return 0;
         }
-        if (more == 9) {
-            table = 0; //รีเซ๊ตโต๊ะแล้วกลับไปวนใหม่ในฟังก์ชันcustomer
-            return 1;
-        }
     }
 }
-
-
 
 
 void showBill() {
@@ -382,8 +376,6 @@ void showBill() {
     cout << "TOTAL PRICE : " << TABLE[table].total << " BAHT" << endl;
     cout << "-------------------------------------\n" << endl;
 }
-
-
 
 
 void employ() {
@@ -466,15 +458,16 @@ void employ() {
         }
         else if (TABLE[check].count > 0) {//ถ้าโต๊ะถูกใช้งานหรือนับมาแล้วให้เแสดงข้อมูลในโต๊ะนั้น
             cout << "\nTABLE " << check << endl;
-            cout << "\n>>> DETAILS <<< :\n" << endl;
+            cout << "\n----------------->>> DETAILS <<< --------------------\n" << endl;
             for (int i = 0; i < TABLE[check].count; i++) {
                 cout << i + 1 << ". " << TABLE[check].List[i] << " x" << TABLE[check].Amount[i] << endl;
             }
             cout << "TOTAL: " << TABLE[check].total << " BAHT" << endl;
-            cout << "\n1. View Payslip" << endl;
-            cout << "\n2.CLEAR TABLE" << endl;
+            cout << "\n-----------------------------------------------------" << endl;
+            cout << "1. View Payslip" << endl;
+            cout << "2. CLEAR TABLE" << endl;
             int Option2;
-            cout << ": ";
+            cout << endl << ">> ";
             cin >> Option2;
 
             if (Option2 == 2) {//ถ้าเลือก1 ให้ล้างข้อมูลของโต๊ะนั้น ทำให้กลายเป้น0
@@ -498,47 +491,6 @@ void employ() {
             }
         }
     }
-}
-
-
-
-
-void payslip(int tableID) {
-    if (TABLE[tableID].count <= 0) {
-        cout << "\n[!] Table " << tableID << " has no orders." << endl;
-        return;
-    }
-
-    cout << "\n------------------------------------------" << endl;
-    cout << "            RECEIPT - TABLE " << tableID << endl;
-    cout << "------------------------------------------" << endl;
-
-
-    cout << left << setw(4) << "No."
-        << setw(22) << "Menu"
-        << setw(6) << "Qty"
-        << "Price" << endl;
-    cout << "------------------------------------------" << endl;
-
-
-    for (int i = 0; i < TABLE[tableID].count; i++) {
-        string menuName = TABLE[tableID].List[i];
-
-        // ถ้าชื่อเมนูยาวเกิน20ตัว เติมจุดจุดเเทนนะ กันเบี้ยว
-        if (menuName.length() > 20) {
-            menuName = menuName.substr(0, 17) + "...";
-        }
-
-        cout << left << setw(4) << i + 1 << setw(22) << menuName
-            << "x" << left << setw(5) << TABLE[tableID].Amount[i]
-            << right << setw(7) << (TABLE[tableID].Price[i] * TABLE[tableID].Amount[i])
-            << " B." << endl;
-    }
-
-    cout << "------------------------------------------" << endl;
-    cout << " TOTAL AMOUNT:" << right << setw(20) << TABLE[tableID].total << " Baht" << endl;
-    cout << "------------------------------------------" << endl;
-
 }
 
 
@@ -593,7 +545,7 @@ void checktable() {//เช็คสถานะโต๊ะว่ามีโ�
 
 
 void Bestselling() {
-    if (TABLE.size() <= 1) {//เช็คว่ามีโต๊ะมั้ย ห้ามน้อยกว่าหรือเท่ากับ1 ไม่งั้นจะเข้าฟังก์ชันนี้แล้วจบการทำงานฟังก์ชัน
+    if (TABLE.size() <= 1) {//เช็คว่ามีโต๊ะมั้ย
         system("cls");
         cout << "\n==================================================" << endl;
         cout << " [!] NO DATA YET... THE KITCHEN IS WAITING! [!] " << endl;
@@ -605,11 +557,11 @@ void Bestselling() {
     vector<int> totalAmount;
 
 
-    for (int t = 1; t < TABLE.size(); t++) { // เช้คทีละโต๊ะ
-        for (int i = 0; i < TABLE[t].count; i++) {//ให้รันดูว่าโต๊ะนั้นสั่งกี่อย่าง
+    for (int t = 1; t < TABLE.size(); t++) { // ไล่นับยอดขายจากทุกโต๊ะที่กินไปแล้ว
+        for (int i = 0; i < TABLE[t].count; i++) {
 
-            string Item = TABLE[t].List[i]; // เก็บชื่ออาหารที่กำลังเช็ค
-            int Qty = TABLE[t].Amount[i];   // เก็บจำนวนที่สั่ง
+            string Item = TABLE[t].List[i]; // ชื่ออาหารที่กำลังเช็ค
+            int Qty = TABLE[t].Amount[i];   // จำนวนที่สั่ง
             bool isFound = false;           // เอาไว้เช็คว่าเคยจดชื่อเมนูนี้ไปยัง
 
 
@@ -623,8 +575,8 @@ void Bestselling() {
 
             // ถ้าค้นหาแล้วยังไม่เจอ
             if (isFound == false) {
-                menuName.push_back(Item);   // เขียนชื่อเมนูใหม่ลงไปถ้าสั่งอันนี้เป้นครั้งแรก
-                totalAmount.push_back(Qty); // เหมือนกันแต่เป้นจำนวน
+                menuName.push_back(Item);   // เขียนชื่อเมนูใหม่ลงไป
+                totalAmount.push_back(Qty); // เขียนจำนวนลงไป
             }
         }
     }
@@ -661,8 +613,43 @@ void Bestselling() {
 
 
 
+void payslip(int tableID) {
+    if (TABLE[tableID].count <= 0) {
+        cout << "\n[!] Table " << tableID << " has no orders." << endl;
+        return;
+    }
+
+    cout << "\n------------------------------------------" << endl;
+    cout << "            RECEIPT - TABLE " << tableID << endl;
+    cout << "------------------------------------------" << endl;
 
 
+    cout << left << setw(4) << "No."
+        << setw(22) << "Menu"
+        << setw(6) << "Qty"
+        << "Price" << endl;
+    cout << "------------------------------------------" << endl;
+
+
+    for (int i = 0; i < TABLE[tableID].count; i++) {
+        string menuName = TABLE[tableID].List[i];
+
+        // ถ้าชื่อเมนูยาวเกิน20ตัว เติมจุดจุดเเทนนะ กันเบี้ยว
+        if (menuName.length() > 20) {
+            menuName = menuName.substr(0, 17) + "...";
+        }
+
+        cout << left << setw(4) << i + 1 << setw(22) << menuName
+            << "x" << left << setw(5) << TABLE[tableID].Amount[i]
+            << right << setw(7) << (TABLE[tableID].Price[i] * TABLE[tableID].Amount[i])
+            << " B." << endl;
+    }
+
+    cout << "------------------------------------------" << endl;
+    cout << " TOTAL AMOUNT:" << right << setw(20) << TABLE[tableID].total << " Baht" << endl;
+    cout << "------------------------------------------" << endl;
+
+}
 
 
 void manageTables() {
@@ -686,7 +673,7 @@ void manageTables() {
         else cout << "TABLE NOT EMPTY!" << endl;
     }
     else if (choice != 0) {
-        cout << "PLEASE TYPE NUMBER 1, 2 OR 0!" << endl;
+        cout << "CAN'T DELETE MORE" << endl;
     }
 }
 
@@ -699,14 +686,26 @@ void saveData() {
         j["useTable"][to_string(i)] = useTable[i];
         json tJ; tJ["count"] = TABLE[i].count; tJ["total"] = TABLE[i].total;
         for (int k = 0; k < TABLE[i].count; k++) {
-            tJ["orders"].push_back({ {"item", TABLE[i].List[k]}, {"price", TABLE[i].Price[k]}, {"qty", TABLE[i].Amount[k]} });
+            tJ["orders"].push_back({ {"item", TABLE[i].List[k]}, {"price", TABLE[i].Price[k]}, {"amount", TABLE[i].Amount[k]} });
         }
         j["tables"][to_string(i)] = tJ;
     }
     ofstream file("database.json"); file << j.dump(4);
+
 }
 
-
+void saveDataformanageinjson() {
+    json j2;
+    for (int i = 1; i < (int)TABLE.size(); i++) {
+        j2["useTable"][to_string(i)] = useTable[i];
+        json tJ2; tJ2["count"] = TABLE[i].count; tJ2["total"] = TABLE[i].total;
+        for (int k = 0; k < TABLE[i].count; k++) {
+            tJ2["orders"].push_back({ {"item", TABLE[i].List[k]}, {"price", TABLE[i].Price[k]}, {"amount", TABLE[i].Amount[k]} });
+        }
+        j2["tables"][to_string(i)] = tJ2;
+    }
+    ofstream file("alldatabaseinfo.json"); file << j2.dump(4);
+}
 
 
 void loadData() {
@@ -716,43 +715,46 @@ void loadData() {
     int savedTableCount = j["tables"].size();
     TABLE.resize(savedTableCount + 1); useTable.resize(savedTableCount + 1);
     for (int i = 1; i < TABLE.size(); i++) {
-        string s = to_string(i); useTable[i] = j["useTable"].value(s, 0);
+        string s = to_string(i);
+        useTable[i] = j["useTable"].value(s, 0);
         if (j["tables"].contains(s)) {
             TABLE[i].count = j["tables"][s].value("count", 0);
             TABLE[i].total = j["tables"][s].value("total", 0);
             for (auto& o : j["tables"][s]["orders"]) {
                 TABLE[i].List.push_back(o.value("item", ""));
                 TABLE[i].Price.push_back(o.value("price", 0));
-                TABLE[i].Amount.push_back(o.value("qty", 0));
+                TABLE[i].Amount.push_back(o.value("amount", 0));
             }
         }
     }
 }
 
-
-
-
-
 void resetData() {
     int confirm;
-    cout << "\n!!! WARNING: RESET ALL DATA !!!" << endl;
+    cout << "\n!!! WARNING: RESET ALL CURRENT DATA !!!" << endl;
     cout << "1. Confirm / 2. Cancel: ";
     cin >> confirm;
 
     if (confirm == 1) {
+        // 1. เคลียร์ข้อมูลใน RAM
         for (int i = 0; i < TABLE.size(); i++) {
-            TABLE[i].List.clear(); TABLE[i].Price.clear(); TABLE[i].Amount.clear();
-            TABLE[i].count = 0; TABLE[i].total = 0;
+            TABLE[i].List.clear();
+            TABLE[i].Price.clear();
+            TABLE[i].Amount.clear();
+            TABLE[i].count = 0;
+            TABLE[i].total = 0;
         }
         fill(useTable.begin(), useTable.end(), 0);
-        cout << ">>> RESET COMPLETED <<<" << endl;
+
+        // 2. สั่ง Save เฉพาะ database.json (ไฟล์หลัก)
+        saveData();
+
+        cout << ">>> RESET COMPLETED: database.json has been cleared. <<<" << endl;
     }
-    else cout << ">>> PLEASE CAREFULLY RESET DATA <<<" << endl;
+    else {
+        cout << ">>> RESET CANCELLED <<<" << endl;
+    }
 }
-
-
-
-
 
 int main() {
     loadData();
@@ -764,6 +766,7 @@ int main() {
             continue;
         }
         if (Num == 0) {
+            saveDataformanageinjson();
             saveData();
             return 0;
         }
